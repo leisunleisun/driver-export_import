@@ -1,0 +1,33 @@
+import pandas as pd
+import datetime as dt
+import webbrowser
+import warnings
+warnings.filterwarnings('ignore')
+df = pd.read_csv(r'C:\Users\sl137\todo.csv')
+
+#提取Internal Reference, order id和reason
+
+df['ir'] = ""
+df['order'] = ""
+df['reason'] = ""
+
+for i in range(len(df)):
+    df['ir'][i] = df['Title'][i][40:-1]
+for i in range(len(df)):
+    df['ir'][i] = df['ir'][i].split(' Order:')
+for i in range(len(df)):
+    df['order'][i] = df['ir'][i][1]
+for i in range(len(df)):
+    df['ir'][i] = df['ir'][i][0]
+for i in range(len(df)):
+    df['order'][i] = df['order'][i].split(' Reason:')
+for i in range(len(df)):
+    df['reason'][i] = df['order'][i][1]
+for i in range(len(df)):
+    df['order'][i] = df['order'][i][0]
+
+url = 'https://erp.pconline365.com/return_central?keyword='
+chrome_path = 'C:/Program Files/Google/Chrome/Application/chrome.exe %s --zhanyu@pconline365.com'
+for i in range(len(df)):
+    url0 = url + df['order'][i]
+    webbrowser.get(chrome_path).open_new(url0)
